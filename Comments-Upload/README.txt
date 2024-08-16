@@ -6,7 +6,7 @@ This repository contains updates for implementing a file upload feature for the 
 
 1. `Comments-Upload/Admin/comments.js` = `scope-inspect-server/api/controllers/CommentsController.js`: Updated React component for the CommentsPage.
 2. `Comments-Upload/Server/comments.js` = `src/app/views/comments/comments.js`: Updated Sails.js controller for handling comments.
-3.  `CommentLibraryUploadInstructions.js: New React component for user instructions
+3. `Comments-Upload/Admin/CommentLibraryLoadInstructions.js': New React component for user instructions
 
 Integration Steps
 1. Frontend Integration
