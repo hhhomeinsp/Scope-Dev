@@ -4,7 +4,7 @@
 This update adds a file upload feature to the Comments functionality, allowing users to upload CSV or Excel files containing multiple comments. The changes affect both the frontend (React) and backend (Sails.js) of the application.
 
 ## Files Changed
-1. 'scope-inspect-server/api/controllers/CommentsController.js' = `frontend/comments.js`
+1. 'scope-inspect-server/api/controllers/CommentsController.js' = `Comments-Upload/Admin/comments.js`
 2. 'src/app/views/comments/comments.js' = `backend/comments.js`
 
 ## Integration Steps
