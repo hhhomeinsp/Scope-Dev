@@ -7,6 +7,7 @@ import CommentAddEditModal from '../../components/modal/commentAddEditModal';
 import CustomTable from "../../components/tables/CustomTable";
 import { PlusIcon, SearchIcon, UploadIcon } from '../../icons/Icons';
 import Spinner from '../../shared/Spinner';
+import CommentLibraryUploadInstructions from './CommentLibraryUploadInstructions';
 
 class CommentsPage extends React.Component {
     constructor(props) {
@@ -35,6 +36,7 @@ class CommentsPage extends React.Component {
                 id: null
             },
             uploadStatus: '',
+            showUploadInstructions: false,
         };
         this.fileInputRef = React.createRef();
         this.load = true;
@@ -199,9 +201,13 @@ class CommentsPage extends React.Component {
         this.fileInputRef.current.click();
     }
 
+    toggleUploadInstructions = () => {
+        this.setState(prevState => ({ showUploadInstructions: !prevState.showUploadInstructions }));
+    }
+
     render = () => {
         const { rowsPerPage, user } = this.props;
-        const { loading, comments, page, totalRecords, commentEditModalSettings, filterComments, uploadStatus } = this.state;
+        const { loading, comments, page, totalRecords, commentEditModalSettings, filterComments, uploadStatus, showUploadInstructions } = this.state;
 
         return (
             <div>
@@ -254,7 +260,13 @@ class CommentsPage extends React.Component {
                         accept=".csv,.xls,.xlsx"
                     />
                     {uploadStatus && <div className="upload-status">{uploadStatus}</div>}
+                    <button onClick={this.toggleUploadInstructions}>
+                        {showUploadInstructions ? 'Hide' : 'Show'} Upload Instructions
+                    </button>
                 </div>
+
+                {showUploadInstructions && <CommentLibraryUploadInstructions />}
+
                 {loading ? (
                     <Spinner />
                 ) : filterComments.length > 0 ? (
