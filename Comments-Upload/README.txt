@@ -6,47 +6,49 @@ This repository contains updates for implementing a file upload feature for the 
 
 1. `Comments-Upload/Admin/comments.js` = `scope-inspect-server/api/controllers/CommentsController.js`: Updated React component for the CommentsPage.
 2. `Comments-Upload/Server/comments.js` = `src/app/views/comments/comments.js`: Updated Sails.js controller for handling comments.
-3. `INTEGRATION_INSTRUCTIONS.md`: Detailed instructions for integrating these changes into the main project.
-4. `CommentLibraryUploadInstructions.js`: New React component providing user instructions for file upload.
+3.  `CommentLibraryUploadInstructions.js: New React component for user instructions
 
-## New Addition: CommentLibraryUploadInstructions.js
+Integration Steps
+1. Frontend Integration
+a. Replace the existing CommentsPage component in your codebase with the new version from frontend/comments.js.
+b. Add the new CommentLibraryUploadInstructions.js file to your components directory.
+c. Update your Redux actions to include the new uploadCommentsFile action:
+javascriptCopy// In your actions file (e.g., commentActions.js)
+export const uploadCommentsFile = (formData, callback) => {
+    return (dispatch) => {
+        return axios.post('/api/upload-comments', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(response => {
+            callback({ success: true, data: response.data });
+        })
+        .catch(error => {
+            callback({ success: false, error });
+        });
+    };
+};
+d. Ensure the new action is imported and included in your mapDispatchToProps.
+e. Update your CSS to style the new upload button, status message, and instructions component.
+2. Backend Integration
+a. Replace the existing CommentsController.js file in your Sails.js app with the new version from backend/comments.js.
+b. Add the new route to your config/routes.js file:
+javascriptCopy'POST /api/upload-comments': 'CommentsController.uploadCommentsFile',
+c. Install required dependencies:
+Copynpm install csv-parser xlsx
+d. Ensure your Sails.js app is configured to handle file uploads. You may need to install and configure sails-hook-uploads if not already set up.
+3. Testing
+a. Test the new file upload functionality:
 
-We've added a new file `CommentLibraryUploadInstructions.js` to provide clear instructions to users on how to prepare and upload their comment library files.
+Upload valid CSV and Excel files
+Test with invalid file formats
+Test with files containing both valid and invalid comments
+Test with large files
 
-### Purpose
-This component displays comprehensive instructions for users, including:
-- Supported file formats
-- Required file structure
-- Example of data formatting
-- Important notes about formatting and limitations
-- Step-by-step upload instructions
-- Post-upload information
-- Troubleshooting tips
-
-### Integration Steps
-1. Place `CommentLibraryUploadInstructions.js` in your components directory.
-2. Import the component in your `CommentsPage` or wherever you want to display the instructions:
-   ```javascript
-   import CommentLibraryUploadInstructions from './CommentLibraryUploadInstructions';
-   ```
-3. Add the component to your render method:
-   ```javascript
-   <CommentLibraryUploadInstructions />
-   ```
-4. Style the component as needed to match your application's design.
-5. Consider implementing a toggle or modal to show/hide these instructions for better user experience.
-
-## Implementation Notes
-- Ensure that the styling of the new instructions component matches the overall design of the application.
-- You may want to add translations if your application supports multiple languages.
-- Consider adding analytics to track how often users view these instructions, which could help in further improving the upload process.
-
-## Testing
-After integrating the new instructions component:
-1. Verify that the instructions are clear and accurate.
-2. Test the component's rendering on different screen sizes to ensure responsiveness.
-3. If you implement a toggle/modal for the instructions, test its functionality.
-
-For full integration instructions and details on other changes, please refer to the INTEGRATION_INSTRUCTIONS.md file in this repository.
-
-If you encounter any issues or have questions, please contact the project lead or open an issue in this repository.
+b. Verify that existing comment functionality still works as expected.
+c. Check for any console errors or warnings.
+4. Error Handling and Validation
+a. Implement frontend validation for file type and size before upload.
+b. Ensure error messages are clear and informative.
+c. Verify backend validation and error handling.
